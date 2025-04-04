@@ -1,0 +1,41 @@
+name: JMeter Performance Test
+
+on:
+  push:
+    branches: [ main ] # Trigger on pushes to the main branch
+  pull_request:
+    branches: [ main ] # Trigger on pull requests to the main branch
+  workflow_dispatch: # Allow manual triggering from the Actions tab
+
+jobs:
+  jmeter-test:
+    runs-on: ubuntu-latest # Or another suitable runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Or your required Java version
+
+      - name: Download and Extract JMeter
+        run: |
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz # Replace with the desired JMeter version
+          tar -xzf apache-jmeter-5.6.2.tgz
+          echo "JMETER_HOME=$(pwd)/apache-jmeter-5.6.3" >> $GITHUB_ENV
+          echo "PATH=$PATH:$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
+
+      - name: Run JMeter Test
+        run: |
+          jmeter -n -t GitHub_JMeter.jmx -l report.jtl # Replace your_test_plan.jmx
+
+      - name: Publish Test Report (Optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-report
+          path: report.jtl
+
+      # Add more steps for analyzing the report, failing the workflow based on thresholds, etc.
