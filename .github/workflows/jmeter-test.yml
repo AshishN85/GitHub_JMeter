@@ -23,10 +23,10 @@ jobs:
 
       - name: Download and Extract JMeter
         run: |
-          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz # Replace with the desired JMeter version
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz # Replace with the desired JMeter version
           tar -xzf apache-jmeter-5.6.2.tgz
-          echo "JMETER_HOME=$(pwd)/apache-jmeter-5.6.3" >> $GITHUB_ENV
-          echo "PATH=$PATH:$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
+          echo "JMETER_HOME=$(pwd)/apache-jmeter-5.6.2" >> $GITHUB_ENV
+          echo "PATH=$PATH:$(pwd)/apache-jmeter-5.6.2/bin" >> $GITHUB_PATH
 
       - name: Run JMeter Test
         run: |
